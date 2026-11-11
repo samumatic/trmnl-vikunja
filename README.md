@@ -32,7 +32,7 @@ Read only: the plugin never changes anything in Vikunja.
 
 ## Setup
 
-1. In Vikunja, open **Settings → API Tokens** and create a token with read rights for **Tasks** and **Projects**.
+1. In Vikunja, open **Settings → API Tokens** and create a token with only these two permissions: **Projects → Read All** and **Tasks → Read All**. Nothing else is needed: labels and assignees come with the tasks.
 2. Add the plugin to TRMNL and paste the token.
 3. Self-hosted: enter your Vikunja address, e.g. `https://tasks.example.com`. Empty means Vikunja Cloud. TRMNL fetches the tasks from its servers, so the address must be reachable from the internet.
 4. Optional: projects (`Groceries, Home` or `12, 14`), an extra filter, order, title.
@@ -44,7 +44,7 @@ Without a token the plugin shows sample tasks.
 | Setting | Default | |
 |---|---|---|
 | Vikunja address | Vikunja Cloud | Base URL of your Vikunja, without `/api/v1` |
-| API token | – | Read rights for Tasks and Projects |
+| API token | – | Permissions: Projects → Read All, Tasks → Read All |
 | Projects | all | Names or IDs, comma separated |
 | Extra filter | – | Vikunja filter syntax, combined with "not done" |
 | Show | All open tasks | Or focus: late, today, tomorrow |

@@ -24,8 +24,8 @@ custom_fields:
 - keyname: api_token
   field_type: password
   name: API token
-  description: 'Vikunja → Settings → API Tokens → create one with read access to Tasks and Projects. Empty: sample tasks.'
-  description-de: 'Vikunja → Einstellungen → API-Tokens → eines mit Lesezugriff auf Tasks und Projects anlegen. Leer: Beispielaufgaben.'
+  description: 'Vikunja → Settings → API Tokens. Permissions: only Projects → Read All and Tasks → Read All. Empty: sample tasks.'
+  description-de: 'Vikunja → Einstellungen → API-Tokens. Berechtigungen: nur Projects → Read All und Tasks → Read All. Leer: Beispielaufgaben.'
   optional: true
 - keyname: projects
   field_type: string
@@ -107,7 +107,7 @@ custom_fields:
   name: About This Plugin
   category: productivity
   github_url: https://github.com/samumatic/trmnl-vikunja
-  description: 'Your open Vikunja tasks as a calm checklist, the most pressing first.<br><br><b>What it shows</b><br>• A box per task; what you tick off today stays, ticked, until midnight<br>• Due dates in plain words: Today, Tomorrow, 3 days late<br>• Priority (! to !!!), assignees and labels<br>• One project, several or all; focus mode for late, today and tomorrow<br><br><b>Setup</b><br>1. In Vikunja: Settings → API Tokens → create one with read access to Tasks and Projects.<br>2. Paste it here. Self-hosted: also enter your Vikunja address.<br>3. Optional: projects, filter, order.<br><br>Read only. Without a token: sample tasks. German or English.<br><br>Code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
+  description: 'Your open Vikunja tasks as a calm checklist, the most pressing first.<br><br><b>What it shows</b><br>• A box per task; what you tick off today stays, ticked, until midnight<br>• Due dates in plain words: Today, Tomorrow, 3 days late<br>• Priority (! to !!!), assignees and labels<br>• One project, several or all; focus mode for late, today and tomorrow<br><br><b>Setup</b><br>1. In Vikunja: Settings → API Tokens. Tick only these two permissions: Projects → Read All, Tasks → Read All.<br>2. Paste it here. Self-hosted: also enter your Vikunja address.<br>3. Optional: projects, filter, order.<br><br>Read only. Without a token: sample tasks. German or English.<br><br>Code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
 name: Vikunja Tasks
 description: Open Vikunja tasks as a checklist
 refresh_interval: 15
