@@ -13,10 +13,9 @@ custom_fields:
   api_token: '{{ env.VIKUNJA_TOKEN }}'
   projects: '{{ env.VIKUNJA_PROJECTS }}'
   filter: ''
-  sort: due
-  group_by_project: 'true'
-  show_labels: 'true'
-  title: ''
+  mode: all
+  details: all
+  show_done_today: 'true'
   language: Auto
 
 time_zone: Europe/Berlin

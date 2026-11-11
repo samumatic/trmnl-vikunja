@@ -27,6 +27,7 @@ RSpec.describe 'Vikunja Tasks' do
   end
 
   def titles(result) = result['groups'].flat_map { |g| g['tasks'].map { it['title'] } }
+  def open_rows(result) = result['groups'].reject { it['name'] =~ /Done today|Heute erledigt/ }.flat_map { it['tasks'] }
 
   describe 'the request' do
     let(:requests) { trmnl.transform(now:, mocks:, variables:, custom_fields:).requests }
@@ -78,7 +79,7 @@ RSpec.describe 'Vikunja Tasks' do
     end
 
     it 'says when tasks are due in plain words' do
-      due = vk('group_by_project' => 'false')['groups'].first['tasks'].to_h { [it['title'], [it['due'], it['urgency']]] }
+      due = open_rows(vk).to_h { [it['title'], [it['due'], it['urgency']]] }
       expect(due).to include('Take out the glass' => ['2 days late', 2], 'Bread' => ['Today 18:00', 1],
                              'Test smoke alarms' => ['Tomorrow', 0], 'Bleed the radiators' => ['Sat', 0],
                              'Cover the roses for winter' => ['Nov 30', 0], 'Renew passport' => ['Feb 15 2027', 0],
@@ -92,24 +93,20 @@ RSpec.describe 'Vikunja Tasks' do
     end
 
     it 'speaks German' do
-      result = vk('language' => 'de', 'group_by_project' => 'false')
-      due = result['groups'].first['tasks'].to_h { [it['title'], it['due']] }
+      result = vk('language' => 'de')
+      due = open_rows(result).to_h { [it['title'], it['due']] }
       expect(result['instance']).to eq('9 offen · 2 erledigt')
       expect(due.values_at('Take out the glass', 'Bread', 'Test smoke alarms', 'Bleed the radiators',
                            'Cover the roses for winter'))
         .to eq(['seit 2 Tagen', 'Heute 18:00', 'Morgen', 'Sa', '30. Nov.'])
     end
 
-    it 'sorts by priority, title or age' do
-      expect(titles(vk('sort' => 'priority', 'group_by_project' => 'false')).first(3))
-        .to eq(['Test smoke alarms', 'Cover the roses for winter', 'Drain cleaner'])
-      expect(titles(vk('sort' => 'title', 'group_by_project' => 'false')).first(2)).to eq(%w[Apples Bleed\ the\ radiators])
-      expect(titles(vk('sort' => 'created', 'group_by_project' => 'false')).first(2)).to eq(['Oat milk', 'Bread'])
-    end
-
-    it 'shows the task labels unless switched off' do
-      expect(vk['groups'].flat_map { it['tasks'] }.find { it['title'] == 'Drain cleaner' }['labels']).to eq(['Drugstore'])
-      expect(vk('show_labels' => 'false')['groups'].flat_map { it['tasks'] }.flat_map { it['labels'] }).to be_empty
+    it 'shows people and labels, people only, or neither' do
+      rows = ->(details) { vk('details' => details)['groups'].flat_map { it['tasks'] } }
+      expect(rows.call('all').find { it['title'] == 'Drain cleaner' }['labels']).to eq(['Drugstore'])
+      expect(rows.call('people').flat_map { it['labels'] }).to be_empty
+      expect(rows.call('people').flat_map { it['people'] }).to include('Alex')
+      expect(rows.call('none').flat_map { it['labels'] + it['people'] }).to be_empty
     end
 
     it 'never shows the HTML description' do
@@ -126,15 +123,12 @@ RSpec.describe 'Vikunja Tasks' do
       expect(screen.text).to include('Alex', 'sam')
     end
 
-    it 'hides them when switched off' do
-      expect(vk('show_assignees' => 'false')['groups'].flat_map { it['tasks'] }.flat_map { it['people'] }).to be_empty
-    end
   end
 
   describe 'focus mode' do
     it 'keeps only what is late or due today or tomorrow' do
-      result = vk('mode' => 'focus', 'group_by_project' => 'false', 'show_done_today' => 'false')
-      expect(titles(result)).to eq(['Take out the glass', 'Bread', 'Test smoke alarms'])
+      result = vk('mode' => 'focus', 'show_done_today' => 'false')
+      expect(titles(result)).to contain_exactly('Take out the glass', 'Bread', 'Test smoke alarms')
       expect(result['instance']).to eq('3 open')
     end
 
@@ -180,10 +174,6 @@ RSpec.describe 'Vikunja Tasks' do
       expect(titles(vk('projects' => '4, 5')).size).to eq(6)
     end
 
-    it 'prefers its own title' do
-      expect(vk('projects' => '3', 'title' => 'Shopping')['title']).to eq('Shopping')
-    end
-
     it 'says which project it cannot find' do
       result = vk('projects' => 'Shoping')
       expect(result['state']).to eq('missing')
@@ -212,6 +202,14 @@ RSpec.describe 'Vikunja Tasks' do
                             mocks: { 'https://tasks.example.com/*' => rejected })
       expect(screen).to have_no_problems
       expect(screen.text).to include('Token rejected')
+    end
+
+    it 'says so when the server answers with something other than tasks, like a block page' do
+      blocked = { status: 403, body: '<html>Forbidden</html>', headers: { 'content-type' => 'text/html' } }
+      screen = trmnl.render(view: 'full', device: 'og_plus', now:, variables:, custom_fields:,
+                            mocks: { 'https://tasks.example.com/*' => blocked })
+      expect(screen).to have_no_problems
+      expect(screen.text).to include('No tasks received', 'tasks.example.com')
     end
 
     it 'names the server it cannot reach' do

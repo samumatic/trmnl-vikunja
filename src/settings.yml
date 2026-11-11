@@ -17,86 +17,60 @@ custom_fields:
 - keyname: base_url
   field_type: url
   name: Vikunja address
-  description: 'Where your Vikunja runs, e.g. tasks.example.com. Empty: Vikunja Cloud.'
-  description-de: 'Wo dein Vikunja läuft, z. B. tasks.example.com. Leer: Vikunja Cloud.'
+  description: 'Leave empty for Vikunja Cloud. For your own server, for example tasks.example.com.'
+  description-de: 'Leer lassen für Vikunja Cloud. Für einen eigenen Server, zum Beispiel tasks.example.com.'
   placeholder: https://app.vikunja.cloud
   optional: true
 - keyname: api_token
   field_type: password
   name: API token
-  description: 'Vikunja → Settings → API Tokens. Permissions: only Projects → Read All and Tasks → Read All. Empty: sample tasks.'
-  description-de: 'Vikunja → Einstellungen → API-Tokens. Berechtigungen: nur Projects → Read All und Tasks → Read All. Leer: Beispielaufgaben.'
+  description: 'Create it in Vikunja under Settings, API Tokens, with Projects: Read All and Tasks: Read All. Without a token you see sample tasks.'
+  description-de: 'In Vikunja unter Einstellungen, API-Tokens anlegen, mit Projects: Read All und Tasks: Read All. Ohne Token siehst du Beispielaufgaben.'
   optional: true
 - keyname: projects
   field_type: string
   name: Projects
-  description: 'Project names or IDs, separated by commas. Empty: all projects.'
-  description-de: 'Projektnamen oder IDs, durch Kommas getrennt. Leer: alle Projekte.'
+  description: 'Project names or IDs, separated by commas. Leave empty for all projects.'
+  description-de: 'Projektnamen oder IDs, durch Kommas getrennt. Leer lassen für alle Projekte.'
   placeholder: Groceries, Home
-  optional: true
-- keyname: filter
-  field_type: string
-  name: Extra filter
-  description: A Vikunja filter on top of "not done", e.g. due_date < now+7d or priority >= 3.
-  description-de: Ein Vikunja-Filter zusätzlich zu „nicht erledigt“, z. B. due_date < now+7d oder priority >= 3.
-  placeholder: due_date < now+7d
   optional: true
 - keyname: mode
   field_type: select
   name: Show
-  description: 'Focus: only what is late or due today or tomorrow.'
-  description-de: 'Fokus: nur, was überfällig ist oder heute oder morgen fällig wird.'
+  description: Only due by tomorrow keeps overdue tasks and those due today or tomorrow.
+  description-de: Nur bis morgen fällig zeigt Überfälliges und was heute oder morgen fällig ist.
   options:
   - All open tasks: all
-  - 'Focus: late, today, tomorrow': focus
+  - Only due by tomorrow: focus
+  default: all
+- keyname: details
+  field_type: select
+  name: Task details
+  description: Shown under each task, next to its due date and priority.
+  description-de: Unter jeder Aufgabe, neben Fälligkeit und Priorität.
+  options:
+  - People and labels: all
+  - People only: people
+  - None: none
   default: all
 - keyname: show_done_today
   field_type: boolean
   name: Done today
-  description: Tasks ticked off today stay on the list, ticked, until midnight.
-  description-de: Heute abgehakte Aufgaben bleiben bis Mitternacht abgehakt auf der Liste.
+  description: Keep tasks finished today on the list, ticked off, until midnight.
+  description-de: Heute erledigte Aufgaben bleiben bis Mitternacht abgehakt auf der Liste.
   default: 'true'
-- keyname: sort
-  field_type: select
-  name: Order
-  description: Due date puts the most pressing first; tasks without a date follow.
-  description-de: Fälligkeit stellt das Dringendste nach vorn; Aufgaben ohne Datum folgen.
-  options:
-  - Due date: due
-  - Priority: priority
-  - Title: title
-  - Oldest first: created
-  default: due
-- keyname: group_by_project
-  field_type: boolean
-  name: Group by project
-  description: Headings per project when more than one project is shown.
-  description-de: Überschriften je Projekt, wenn mehrere Projekte gezeigt werden.
-  default: 'true'
-- keyname: show_labels
-  field_type: boolean
-  name: Show labels
-  description: The task's Vikunja labels next to its due date.
-  description-de: Die Vikunja-Labels der Aufgabe neben ihrer Fälligkeit.
-  default: 'true'
-- keyname: show_assignees
-  field_type: boolean
-  name: Show assignees
-  description: Who a task is assigned to, by first name.
-  description-de: Wem eine Aufgabe zugewiesen ist, mit Vornamen.
-  default: 'true'
-- keyname: title
+- keyname: filter
   field_type: string
-  name: Title
-  description: 'Title on the screen. Empty: the project name, or "Tasks".'
-  description-de: 'Titel auf dem Bildschirm. Leer: der Projektname oder „Aufgaben“.'
-  placeholder: Shopping
+  name: Advanced filter
+  description: 'Optional Vikunja filter, for example priority >= 3.'
+  description-de: 'Optionaler Vikunja-Filter, zum Beispiel priority >= 3.'
+  placeholder: priority >= 3
   optional: true
 - keyname: language
   field_type: select
   name: Language
-  description: Auto follows the language of your TRMNL account.
-  description-de: Auto folgt der Sprache deines TRMNL-Kontos.
+  description: Auto uses the language of your TRMNL account.
+  description-de: Auto nutzt die Sprache deines TRMNL-Kontos.
   options:
   - Auto: auto
   - Deutsch: de
@@ -107,7 +81,7 @@ custom_fields:
   name: About This Plugin
   category: productivity
   github_url: https://github.com/samumatic/trmnl-vikunja
-  description: 'Your open Vikunja tasks as a calm checklist, the most pressing first.<br><br><b>What it shows</b><br>• A box per task; what you tick off today stays, ticked, until midnight<br>• Due dates in plain words: Today, Tomorrow, 3 days late<br>• Priority (! to !!!), assignees and labels<br>• One project, several or all; focus mode for late, today and tomorrow<br><br><b>Setup</b><br>1. In Vikunja: Settings → API Tokens, new token with only these permissions:<br>&nbsp;&nbsp;&nbsp;• Projects → Read All<br>&nbsp;&nbsp;&nbsp;• Tasks → Read All<br>2. Paste it here. Self-hosted: also enter your Vikunja address.<br>3. Optional: projects, filter, order.<br><br>Read only. Without a token: sample tasks. German or English.<br><br>Code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
+  description: 'Your open Vikunja tasks as a calm checklist, the most pressing first.<br><br><b>What it shows</b><br>• A box per task; what you finish today stays, ticked off, until midnight<br>• Due dates in plain words: Today, Tomorrow, 3 days late<br>• Priority marks, people and labels<br>• One project, several or all; or only what is due by tomorrow<br><br><b>Setup</b><br>1. In Vikunja, open Settings, then API Tokens, and create a token with these permissions:<br>&nbsp;&nbsp;&nbsp;• Projects: Read All<br>&nbsp;&nbsp;&nbsp;• Tasks: Read All<br>2. Paste the token here. For your own server, also enter its address.<br>3. Optional: choose projects.<br><br>Read only. Without a token you see sample tasks. German or English.<br><br>Code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
 name: Vikunja Tasks
 description: Open Vikunja tasks as a checklist
 refresh_interval: 15

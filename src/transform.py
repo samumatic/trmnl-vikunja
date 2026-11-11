@@ -24,6 +24,7 @@ WORDS = {
         "focus_text": "Nichts fällig bis morgen.",
         "auth_title": "Token abgelehnt", "auth_text": "Vikunja hat das API-Token nicht angenommen. Token und Rechte (Tasks, Projects lesen) prüfen.",
         "down_title": "Vikunja nicht erreichbar", "down_text": "Keine Antwort von {host}. Adresse in den Plugin-Einstellungen prüfen.",
+        "odd_title": "Keine Aufgaben erhalten", "odd_text": "{host} hat keine Aufgabenliste geschickt. Vielleicht blockt eine Firewall oder ein Rate-Limit TRMNL.",
         "error_title": "Fehler von Vikunja", "missing_title": "Projekt nicht gefunden",
         "missing_text": "Kein Projekt heißt {names}.",
         # (title, priority, due in days or None, labels, assignee, done)
@@ -46,6 +47,7 @@ WORDS = {
         "focus_text": "Nothing due by tomorrow.",
         "auth_title": "Token rejected", "auth_text": "Vikunja did not accept the API token. Check the token and its rights (read Tasks and Projects).",
         "down_title": "Vikunja unreachable", "down_text": "No answer from {host}. Check the address in the plugin settings.",
+        "odd_title": "No tasks received", "odd_text": "{host} did not send a task list. A firewall or rate limit may be blocking TRMNL.",
         "error_title": "Error from Vikunja", "missing_title": "Project not found",
         "missing_text": "No project is called {names}.",
         "demo_groups": [
@@ -117,15 +119,9 @@ def person(user):
     return name.split()[0] if name else str(user.get("username") or "")
 
 
-def sort_key(order):
-    far = datetime(9999, 1, 1, tzinfo=timezone.utc)
-    if order == "priority":
-        return lambda t: (-t["priority"], t["due_at"] or far, t["id"])
-    if order == "title":
-        return lambda t: (t["title"].casefold(), t["id"])
-    if order == "created":
-        return lambda t: t["id"]
-    return lambda t: (t["due_at"] or far, -t["priority"], t["id"])
+def most_pressing(t):
+    """Earliest due first, undated last; higher priority first on the same due time."""
+    return (t["due_at"] or datetime(9999, 1, 1, tzinfo=timezone.utc), -t["priority"], t["id"])
 
 
 def wanted_projects(text, projects):
@@ -188,7 +184,7 @@ def row(t, done, today, opts):
 
 
 def build_groups(open_tasks, done_tasks, names, group, today, opts):
-    tasks = sorted((simplify(t, opts) for t in open_tasks), key=sort_key(opts["order"]))
+    tasks = sorted((simplify(t, opts) for t in open_tasks), key=most_pressing)
     groups, index = [], {}
     for t in tasks[:MAX_TASKS]:
         key = t["project_id"] if group else 0
@@ -240,10 +236,9 @@ def run(input):
     today = now.date()
     focus = str(fields.get("mode") or "all") == "focus"
     show_done = switch(fields, "show_done_today")
-    opts = {"order": str(fields.get("sort") or "due"), "labels": switch(fields, "show_labels"),
-            "assignees": switch(fields, "show_assignees"), "tz": tz, "w": w, "lang": lang}
-    group = switch(fields, "group_by_project")
-    bar = str(fields.get("title") or "").strip() or w["title"]
+    details = str(fields.get("details") or "all")
+    opts = {"labels": details == "all", "assignees": details in ("all", "people"), "tz": tz, "w": w, "lang": lang}
+    bar = w["title"]
     host = str(fields.get("base_url") or "https://app.vikunja.cloud").split("//")[-1].split("/")[0]
     empty_text = w["focus_text"] if focus else w["done_text"]
 
@@ -254,7 +249,7 @@ def run(input):
         done_tasks = done_tasks if show_done else []
         return {"vk": {"state": "demo", "title": bar, "instance": w["demo"],
                        "open": len(open_tasks), "done": len(done_tasks), "message": None,
-                       "groups": build_groups(open_tasks, done_tasks, names, group, today, opts)}}
+                       "groups": build_groups(open_tasks, done_tasks, names, True, today, opts)}}
 
     answer = input.get("IDX_0", input)
     task_rows = rows(answer)
@@ -265,6 +260,9 @@ def run(input):
             return {"vk": message("auth", w["auth_title"], w["auth_text"], bar)}
         if isinstance(text, str) and text:
             return {"vk": message("error", w["error_title"], text[:160], bar)}
+        if answer:
+            # Something answered, but not with tasks: an HTML block page, a rate limit, a proxy error.
+            return {"vk": message("unexpected", w["odd_title"], w["odd_text"].format(host=host), bar)}
         return {"vk": message("unreachable", w["down_title"], w["down_text"].format(host=host), bar)}
 
     projects = [p for p in (rows(input.get("IDX_1")) or []) if isinstance(p, dict)]
@@ -287,9 +285,7 @@ def run(input):
                 done_tasks.append(t)
 
     shown = {t.get("project_id") for t in open_tasks + done_tasks} if ids is None else ids
-    title = str(fields.get("title") or "").strip()
-    if not title:
-        title = (names.get(next(iter(shown))) or w["title"]) if len(shown) == 1 else w["title"]
+    title = (names.get(next(iter(shown))) or w["title"]) if len(shown) == 1 else w["title"]
     count = len(open_tasks) + len(done_tasks)
     return {"vk": {
         "state": "ok" if count else "empty",
@@ -297,6 +293,6 @@ def run(input):
         "instance": summary(w, len(open_tasks), len(done_tasks)),
         "open": len(open_tasks),
         "done": len(done_tasks),
-        "groups": build_groups(open_tasks, done_tasks, names, group and len(shown) > 1, today, opts),
+        "groups": build_groups(open_tasks, done_tasks, names, len(shown) > 1, today, opts),
         "message": None if count else {"title": w["done_title"], "text": empty_text},
     }}
