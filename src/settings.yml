@@ -76,12 +76,6 @@ custom_fields:
   category: productivity
   github_url: https://github.com/samumatic/trmnl-vikunja
   description: 'Your open Vikunja tasks as a calm checklist, the most pressing first.<br><br><b>What it shows</b><br>• Due dates in plain words: Today, Tomorrow, 3 days late<br>• Priority marks, people and labels<br>• Tasks grouped by project<br>• Works with Vikunja Cloud and your own server<br><br><b>Setup</b><br>1. In Vikunja, open Settings, then API Tokens, and create a token with these permissions:<br>&nbsp;&nbsp;&nbsp;• Projects: Read All<br>&nbsp;&nbsp;&nbsp;• Tasks: Read All<br>2. Paste the token below.<br><br>Without a token you see sample tasks. The plugin only reads from Vikunja and never changes anything.<br><br>Code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
-recipe_overview: |-
-  Vikunja Tasks shows the open tasks of your Vikunja on your TRMNL as a calm checklist, the most pressing first.
-
-  Due dates read in plain words, like Today, Tomorrow or 3 days late. Urgent tasks carry priority marks, and each task can show who it is assigned to and its labels. With several projects, tasks are grouped under their project. Tasks you finish today stay on the list, ticked off, until midnight, and a focus option shows only what is overdue or due by tomorrow.
-
-  It works with Vikunja Cloud and with your own Vikunja server, needs only a read-only API token, and never changes anything in Vikunja. All four layouts work on TRMNL OG and TRMNL X, in landscape and portrait, in German or English.
 name: Vikunja Tasks
 description: Open Vikunja tasks as a checklist
 refresh_interval: 15
