@@ -40,8 +40,8 @@ custom_fields:
 - keyname: filter
   field_type: string
   name: Extra filter
-  description: 'A Vikunja filter on top of "not done", e.g. due_date < now+7d or priority >= 3.'
-  description-de: 'Ein Vikunja-Filter zusätzlich zu „nicht erledigt“, z. B. due_date < now+7d oder priority >= 3.'
+  description: A Vikunja filter on top of "not done", e.g. due_date < now+7d or priority >= 3.
+  description-de: Ein Vikunja-Filter zusätzlich zu „nicht erledigt“, z. B. due_date < now+7d oder priority >= 3.
   placeholder: due_date < now+7d
   optional: true
 - keyname: mode
