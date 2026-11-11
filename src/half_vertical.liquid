@@ -1,0 +1,10 @@
+{% if vk.groups.size > 0 %}
+<div class="layout layout--col layout--top layout--stretch-x">
+  <div class="columns" data-overflow-max-cols="1" data-overflow-counter="true">
+    <div class="column">{{ vk_items_wide }}</div>
+  </div>
+</div>
+{% else %}
+{{ vk_message }}
+{% endif %}
+{{ vk_title_bar }}

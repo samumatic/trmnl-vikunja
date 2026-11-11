@@ -1,0 +1,26 @@
+# TRMNLP configuration
+# {{ env.VARIABLE }} interpolation is available here
+---
+# auto-reload when files change (`watch: false` to disable)
+watch:
+  - .trmnlp.yml
+  - src
+
+# values of custom fields (defined in src/settings.yml)
+# Your own Vikunja: export VIKUNJA_URL and VIKUNJA_TOKEN before `bin/trmnlp serve`. Without a token: sample tasks.
+custom_fields:
+  base_url: '{{ env.VIKUNJA_URL | default: "https://app.vikunja.cloud" }}'
+  api_token: '{{ env.VIKUNJA_TOKEN }}'
+  projects: '{{ env.VIKUNJA_PROJECTS }}'
+  filter: ''
+  sort: due
+  group_by_project: 'true'
+  show_labels: 'true'
+  title: ''
+  language: Auto
+
+time_zone: Europe/Berlin
+
+# override variables
+variables:
+  trmnl: {}

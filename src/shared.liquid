@@ -1,0 +1,70 @@
+{% comment %} Everything below comes ready from transform.py as `vk`: words, order, due labels and states. {% endcomment %}
+
+{% capture vk_title_bar %}
+  <div class="title_bar">
+    <svg class="image w--6 h--6" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M6 2h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6a4 4 0 0 1 4-4zm0 2.5A1.5 1.5 0 0 0 4.5 6v12A1.5 1.5 0 0 0 6 19.5h12a1.5 1.5 0 0 0 1.5-1.5V6A1.5 1.5 0 0 0 18 4.5zm4.2 11.6L6.6 12.5l1.8-1.8 1.8 1.8 5.4-5.4 1.8 1.8z"/></svg>
+    <span class="title">{{ vk.title | default: "Vikunja" }}</span>
+    {% if vk.instance != blank %}<span class="instance">{{ vk.instance }}</span>{% endif %}
+  </div>
+{% endcapture %}
+
+{% comment %} An empty box to tick: the Framework has no checkbox, so it is drawn, in the text colour so it follows dark mode. {% endcomment %}
+{% capture vk_box %}<svg class="w--4 h--4" viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>{% endcapture %}
+
+{% comment %} Due date: filled when late, outlined today, underlined later. Priority (Vikunja 3 to 5) as one to three "!". {% endcomment %}
+{% capture vk_items_wide %}
+  {% for vk_g in vk.groups %}
+    {% if vk_g.name != blank %}<span class="label label--small group-header" data-group-header="true">{{ vk_g.name }}</span>{% endif %}
+    {% for vk_t in vk_g.tasks %}
+      <div class="item">
+        <div class="content">
+          <div class="flex flex--row flex--top gap--small">
+          <div class="flex-none mt--1">{{ vk_box }}</div>
+          <div class="flex flex--col flex--left gap--none grow">
+          <span class="title title--small" data-clamp="2">{{ vk_t.title }}</span>
+          {% if vk_t.due != blank or vk_t.prio != blank or vk_t.labels.size > 0 %}
+            <div class="flex gap--small">
+              {% if vk_t.prio != blank %}<span class="label label--small label--inverted">{{ vk_t.prio }}</span>{% endif %}
+              {% if vk_t.due != blank %}<span class="label label--small {% if vk_t.urgency == 2 %}label--inverted{% elsif vk_t.urgency == 1 %}label--outline{% else %}label--underline{% endif %}">{{ vk_t.due }}</span>{% endif %}
+              {% for vk_l in vk_t.labels %}<span class="label label--small label--gray 1bit:text--black">{{ vk_l }}</span>{% endfor %}
+            </div>
+          {% endif %}
+          </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% endfor %}
+{% endcapture %}
+
+{% comment %} Small views: one line per task, only what is pressing (priority and due date). {% endcomment %}
+{% capture vk_items_compact %}
+  {% for vk_g in vk.groups %}
+    {% if vk_g.name != blank %}<span class="label label--small group-header" data-group-header="true">{{ vk_g.name }}</span>{% endif %}
+    {% for vk_t in vk_g.tasks %}
+      <div class="item">
+        <div class="icon">{{ vk_box }}</div>
+        <div class="content">
+          <div class="flex flex--row gap--small">
+            <span class="title title--small grow" data-clamp="1">{{ vk_t.title }}</span>
+            {% if vk_t.prio != blank %}<span class="label label--small label--inverted flex-none">{{ vk_t.prio }}</span>{% endif %}
+            {% if vk_t.due != blank %}<span class="label label--small flex-none {% if vk_t.urgency == 2 %}label--inverted{% elsif vk_t.urgency == 1 %}label--outline{% else %}label--underline{% endif %}">{{ vk_t.due }}</span>{% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% endfor %}
+{% endcapture %}
+
+{% comment %} No list to show: all done, or a problem with the token or the server. {% endcomment %}
+{% capture vk_message %}
+  <div class="layout layout--col layout--center gap--small">
+    {% if vk.state == "empty" %}
+      <svg class="w--12 h--12" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.2 16.6 4.6 12l1.8-1.8 2.8 2.8 8.4-8.4 1.8 1.8z"/></svg>
+    {% else %}
+      <svg class="w--12 h--12" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 2 1 21h22zm0 4.5L19.5 19h-15zM11 10h2v5h-2zm0 6h2v2h-2z"/></svg>
+    {% endif %}
+    <span class="title">{{ vk.message.title | default: "Vikunja" }}</span>
+    {% if vk.message.text != blank %}<span class="description text--center" data-clamp="3">{{ vk.message.text }}</span>{% endif %}
+  </div>
+{% endcapture %}
