@@ -2,7 +2,8 @@
 
 Polled: IDX_0 = GET /api/v1/tasks (open tasks, plus the user's own filter; in focus mode only those due by
 tomorrow), IDX_1 = GET /api/v1/projects (names), IDX_2 = GET /api/v1/tasks done since midnight (only when
-"done today" is on). Everything the markup shows is decided here: which projects, the order, the due-date words
+"done today" is on). Without a token only the public /api/v1/info is polled, so TRMNL sees no failing request,
+and sample tasks are shown. Everything the markup shows is decided here: which projects, the order, the due-date words
 in German or English, who a task is assigned to, and what to say when the token is missing, rejected or the
 server can't be reached.
 """

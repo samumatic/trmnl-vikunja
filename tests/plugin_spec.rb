@@ -52,6 +52,14 @@ RSpec.describe 'Vikunja Tasks' do
       expect(url).to include('filter=done+%3D+false+%26%26+due_date+%3C+now%2Fd%2B2d&')
     end
 
+    it 'asks only for the public server info without a token, so nothing fails' do
+      fields = custom_fields.merge('api_token' => ' ')
+      mocks = { 'https://tasks.example.com/api/v1/info' => { json: { 'version' => 'v2.8.0' } } }
+      result = trmnl.transform(now:, mocks:, variables:, custom_fields: fields)
+      expect(result.requests.map { it[:url] }).to eq(['https://tasks.example.com/api/v1/info'])
+      expect(result.data['vk']['state']).to eq('demo')
+    end
+
     it 'skips the done-today request when switched off' do
       fields = custom_fields.merge('show_done_today' => 'false')
       expect(trmnl.transform(now:, mocks:, variables:, custom_fields: fields).requests.size).to eq(2)
