@@ -17,8 +17,8 @@ custom_fields:
 - keyname: base_url
   field_type: url
   name: Vikunja address
-  description: 'Leave empty for Vikunja Cloud. For your own server, for example tasks.example.com.'
-  description-de: 'Leer lassen für Vikunja Cloud. Für einen eigenen Server, zum Beispiel tasks.example.com.'
+  description: Leave empty for Vikunja Cloud. For your own server, for example tasks.example.com.
+  description-de: Leer lassen für Vikunja Cloud. Für einen eigenen Server, zum Beispiel tasks.example.com.
   placeholder: https://app.vikunja.cloud
   optional: true
 - keyname: api_token
@@ -30,8 +30,8 @@ custom_fields:
 - keyname: projects
   field_type: string
   name: Projects
-  description: 'Project names or IDs, separated by commas. Leave empty for all projects.'
-  description-de: 'Projektnamen oder IDs, durch Kommas getrennt. Leer lassen für alle Projekte.'
+  description: Project names or IDs, separated by commas. Leave empty for all projects.
+  description-de: Projektnamen oder IDs, durch Kommas getrennt. Leer lassen für alle Projekte.
   placeholder: Groceries, Home
   optional: true
 - keyname: mode
@@ -62,8 +62,8 @@ custom_fields:
 - keyname: filter
   field_type: string
   name: Advanced filter
-  description: 'Optional Vikunja filter, for example priority >= 3.'
-  description-de: 'Optionaler Vikunja-Filter, zum Beispiel priority >= 3.'
+  description: Optional Vikunja filter, for example priority >= 3.
+  description-de: Optionaler Vikunja-Filter, zum Beispiel priority >= 3.
   placeholder: priority >= 3
   optional: true
 - keyname: language
