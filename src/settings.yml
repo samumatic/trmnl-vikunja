@@ -24,8 +24,8 @@ custom_fields:
 - keyname: api_token
   field_type: password
   name: API token
-  description: 'In Vikunja: Settings, API Tokens. Read rights for Tasks and Projects are enough. Empty: sample tasks.'
-  description-de: 'In Vikunja: Einstellungen, API-Tokens. Leserechte für Tasks und Projects genügen. Leer: Beispielaufgaben.'
+  description: 'Vikunja → Settings → API Tokens → create one with read access to Tasks and Projects. Empty: sample tasks.'
+  description-de: 'Vikunja → Einstellungen → API-Tokens → eines mit Lesezugriff auf Tasks und Projects anlegen. Leer: Beispielaufgaben.'
   optional: true
 - keyname: projects
   field_type: string
@@ -107,7 +107,7 @@ custom_fields:
   name: About This Plugin
   category: productivity
   github_url: https://github.com/samumatic/trmnl-vikunja
-  description: 'Shows the open tasks of your Vikunja as a calm checklist on your TRMNL: a box for every task, the most pressing first, due dates in plain words like Today, Tomorrow or 3 days late, priority marks for what is urgent, and who each task is assigned to. What you tick off today stays on the list, ticked, until midnight. A focus mode shows only what is late or due today or tomorrow. Pick one project, several, or all of them; with several, tasks are grouped under their project. An extra Vikunja filter narrows the list further, for example to the next seven days or to high priority. Works with Vikunja Cloud and with your own Vikunja server, needs only an API token with read rights for tasks and projects, and never writes to Vikunja. German or English.<br><br>Without a token the plugin shows sample tasks, so you can see the layout first.<br><br>Source code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
+  description: 'Your open Vikunja tasks as a calm checklist, the most pressing first.<br><br><b>What it shows</b><br>• A box per task; what you tick off today stays, ticked, until midnight<br>• Due dates in plain words: Today, Tomorrow, 3 days late<br>• Priority (! to !!!), assignees and labels<br>• One project, several or all; focus mode for late, today and tomorrow<br><br><b>Setup</b><br>1. In Vikunja: Settings → API Tokens → create one with read access to Tasks and Projects.<br>2. Paste it here. Self-hosted: also enter your Vikunja address.<br>3. Optional: projects, filter, order.<br><br>Read only. Without a token: sample tasks. German or English.<br><br>Code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
 name: Vikunja Tasks
 description: Open Vikunja tasks as a checklist
 refresh_interval: 15
