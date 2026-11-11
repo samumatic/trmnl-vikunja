@@ -4,15 +4,113 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-framework_version: 3.4.6
-serverless_language: ''
+framework_version: latest
+serverless_language: python
 refresh_interval_floor: ''
-polling_url: ''
-polling_headers: ''
+polling_url: |-
+  {%- assign vk_base = base_url | default: 'https://app.vikunja.cloud' | strip -%}{%- assign vk_end = vk_base | slice: -1, 1 -%}{%- if vk_end == '/' -%}{%- assign vk_len = vk_base | size | minus: 1 -%}{%- assign vk_base = vk_base | slice: 0, vk_len -%}{%- endif -%}{%- assign vk_filter = 'done = false' -%}{%- assign vk_done = 'done = true && done_at >= now/d' -%}{%- if mode == 'focus' -%}{%- assign vk_filter = vk_filter | append: ' && due_date < now/d+2d' -%}{%- endif -%}{%- assign vk_extra = filter | strip -%}{%- if vk_extra != '' -%}{%- assign vk_filter = vk_filter | append: ' && (' | append: vk_extra | append: ')' -%}{%- assign vk_done = vk_done | append: ' && (' | append: vk_extra | append: ')' -%}{%- endif -%}{%- assign vk_tz = trmnl.user.time_zone_iana | default: 'UTC' | url_encode -%}{{ vk_base }}/api/v1/tasks?per_page=250&filter={{ vk_filter | url_encode }}&filter_timezone={{ vk_tz }}
+  {{ vk_base }}/api/v1/projects?per_page=250
+  {% if show_done_today != 'false' %}{{ vk_base }}/api/v1/tasks?per_page=250&filter={{ vk_done | url_encode }}&filter_timezone={{ vk_tz }}{% endif %}
+polling_headers: authorization=Bearer {{ api_token }}
 polling_body: ''
 id: 537779
 oauth_enabled: 'false'
 oauth_pkce_enabled: 'no'
+custom_fields:
+- keyname: base_url
+  field_type: url
+  name: Vikunja address
+  description: 'Where your Vikunja runs, e.g. tasks.example.com. Empty: Vikunja Cloud.'
+  description-de: 'Wo dein Vikunja läuft, z. B. tasks.example.com. Leer: Vikunja Cloud.'
+  placeholder: https://app.vikunja.cloud
+  optional: true
+- keyname: api_token
+  field_type: password
+  name: API token
+  description: 'In Vikunja: Settings, API Tokens. Read rights for Tasks and Projects are enough. Empty: sample tasks.'
+  description-de: 'In Vikunja: Einstellungen, API-Tokens. Leserechte für Tasks und Projects genügen. Leer: Beispielaufgaben.'
+  optional: true
+- keyname: projects
+  field_type: string
+  name: Projects
+  description: 'Project names or IDs, separated by commas. Empty: all projects.'
+  description-de: 'Projektnamen oder IDs, durch Kommas getrennt. Leer: alle Projekte.'
+  placeholder: Groceries, Home
+  optional: true
+- keyname: filter
+  field_type: string
+  name: Extra filter
+  description: 'A Vikunja filter on top of "not done", e.g. due_date < now+7d or priority >= 3.'
+  description-de: 'Ein Vikunja-Filter zusätzlich zu „nicht erledigt“, z. B. due_date < now+7d oder priority >= 3.'
+  placeholder: due_date < now+7d
+  optional: true
+- keyname: mode
+  field_type: select
+  name: Show
+  description: 'Focus: only what is late or due today or tomorrow.'
+  description-de: 'Fokus: nur, was überfällig ist oder heute oder morgen fällig wird.'
+  options:
+  - All open tasks: all
+  - 'Focus: late, today, tomorrow': focus
+  default: all
+- keyname: show_done_today
+  field_type: boolean
+  name: Done today
+  description: Tasks ticked off today stay on the list, ticked, until midnight.
+  description-de: Heute abgehakte Aufgaben bleiben bis Mitternacht abgehakt auf der Liste.
+  default: 'true'
+- keyname: sort
+  field_type: select
+  name: Order
+  description: Due date puts the most pressing first; tasks without a date follow.
+  description-de: Fälligkeit stellt das Dringendste nach vorn; Aufgaben ohne Datum folgen.
+  options:
+  - Due date: due
+  - Priority: priority
+  - Title: title
+  - Oldest first: created
+  default: due
+- keyname: group_by_project
+  field_type: boolean
+  name: Group by project
+  description: Headings per project when more than one project is shown.
+  description-de: Überschriften je Projekt, wenn mehrere Projekte gezeigt werden.
+  default: 'true'
+- keyname: show_labels
+  field_type: boolean
+  name: Show labels
+  description: The task's Vikunja labels next to its due date.
+  description-de: Die Vikunja-Labels der Aufgabe neben ihrer Fälligkeit.
+  default: 'true'
+- keyname: show_assignees
+  field_type: boolean
+  name: Show assignees
+  description: Who a task is assigned to, by first name.
+  description-de: Wem eine Aufgabe zugewiesen ist, mit Vornamen.
+  default: 'true'
+- keyname: title
+  field_type: string
+  name: Title
+  description: 'Title on the screen. Empty: the project name, or "Tasks".'
+  description-de: 'Titel auf dem Bildschirm. Leer: der Projektname oder „Aufgaben“.'
+  placeholder: Shopping
+  optional: true
+- keyname: language
+  field_type: select
+  name: Language
+  description: Auto follows the language of your TRMNL account.
+  description-de: Auto folgt der Sprache deines TRMNL-Kontos.
+  options:
+  - Auto: auto
+  - Deutsch: de
+  - English: en
+  default: auto
+- keyname: about
+  field_type: author_bio
+  name: About This Plugin
+  category: productivity
+  github_url: https://github.com/samumatic/trmnl-vikunja
+  description: 'Shows the open tasks of your Vikunja as a calm checklist on your TRMNL: a box for every task, the most pressing first, due dates in plain words like Today, Tomorrow or 3 days late, priority marks for what is urgent, and who each task is assigned to. What you tick off today stays on the list, ticked, until midnight. A focus mode shows only what is late or due today or tomorrow. Pick one project, several, or all of them; with several, tasks are grouped under their project. An extra Vikunja filter narrows the list further, for example to the next seven days or to high priority. Works with Vikunja Cloud and with your own Vikunja server, needs only an API token with read rights for tasks and projects, and never writes to Vikunja. German or English.<br><br>Without a token the plugin shows sample tasks, so you can see the layout first.<br><br>Source code and bug reports: <a href="https://github.com/samumatic/trmnl-vikunja" class="underline" target="_blank">GitHub</a>'
 name: Vikunja Tasks
-description:
-refresh_interval:
+description: Open Vikunja tasks as a checklist
+refresh_interval: 15
