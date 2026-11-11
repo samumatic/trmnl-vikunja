@@ -45,7 +45,7 @@ Without a token the plugin shows sample tasks.
 | Vikunja address | Vikunja Cloud | Base URL of your Vikunja |
 | API token | – | Projects: Read All, Tasks: Read All |
 | Projects | all | Names or IDs, comma separated |
-| Show | All open tasks | Or only what is due by tomorrow (overdue, today, tomorrow) |
+| Show | All open tasks | Or only overdue, today and tomorrow |
 | Task details | People and labels | Or people only, or none |
 | Done today | on | Tasks finished today stay, ticked off, until midnight |
 | Advanced filter | – | Vikunja filter syntax, e.g. `priority >= 3` |
