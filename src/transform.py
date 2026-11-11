@@ -251,7 +251,8 @@ def run(input):
                        "open": len(open_tasks), "done": len(done_tasks), "message": None,
                        "groups": build_groups(open_tasks, done_tasks, names, True, today, opts)}}
 
-    answer = input.get("IDX_0", input)
+    # One polled URL arrives at the top level, several as IDX_0.. ; TRMNL's own variables are not an answer.
+    answer = input.get("IDX_0", {k: v for k, v in input.items() if k != "trmnl"})
     task_rows = rows(answer)
     if task_rows is None:
         code = answer.get("code") if isinstance(answer, dict) else None

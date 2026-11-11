@@ -212,6 +212,11 @@ RSpec.describe 'Vikunja Tasks' do
       expect(screen.text).to include('No tasks received', 'tasks.example.com')
     end
 
+    it 'counts no polled data at all as no answer, not as a strange one' do
+      result = trmnl.transform(now:, variables:, custom_fields:, data: {}).data['vk']
+      expect(result['state']).to eq('unreachable')
+    end
+
     it 'names the server it cannot reach' do
       screen = trmnl.render(view: 'full', device: 'og_plus', now:, variables:, custom_fields:,
                             mocks: { 'https://tasks.example.com/*' => { error: :reset } })
