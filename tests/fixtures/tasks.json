@@ -9,7 +9,9 @@
   "labels": null,
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#11",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": null,
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 12,
@@ -21,7 +23,15 @@
   "labels": null,
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#12",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": [
+   {
+    "id": 2,
+    "username": "alex",
+    "name": "Alex Example"
+   }
+  ],
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 13,
@@ -39,7 +49,9 @@
   ],
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#13",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": null,
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 14,
@@ -51,7 +63,9 @@
   "labels": null,
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#14",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": null,
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 21,
@@ -63,7 +77,9 @@
   "labels": null,
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#21",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": null,
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 22,
@@ -75,7 +91,9 @@
   "labels": null,
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#22",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": null,
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 23,
@@ -93,7 +111,20 @@
   ],
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#23",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": [
+   {
+    "id": 2,
+    "username": "alex",
+    "name": "Alex Example"
+   },
+   {
+    "id": 3,
+    "username": "sam",
+    "name": ""
+   }
+  ],
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 24,
@@ -105,7 +136,9 @@
   "labels": null,
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#24",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": null,
+  "done_at": "0001-01-01T00:00:00Z"
  },
  {
   "id": 31,
@@ -117,6 +150,8 @@
   "labels": null,
   "description": "<p>Some <b>HTML</b> notes</p>",
   "identifier": "#31",
-  "percent_done": 0
+  "percent_done": 0,
+  "assignees": null,
+  "done_at": "0001-01-01T00:00:00Z"
  }
 ]

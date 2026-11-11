@@ -2,7 +2,7 @@
 
 # Vikunja Tasks
 
-The open tasks of your [Vikunja](https://vikunja.io) as a calm checklist on [TRMNL](https://trmnl.com) e-paper displays: a box for every task, the most pressing first, due dates in plain words and priority marks for what is urgent.
+The open tasks of your [Vikunja](https://vikunja.io) as a calm checklist on [TRMNL](https://trmnl.com) e-paper displays: a box for every task, the most pressing first, due dates in plain words, priority marks for what is urgent and who each task belongs to. What you tick off today stays on the list, ticked, until midnight.
 
 ![Full layout](docs/full.png)
 
@@ -19,6 +19,9 @@ The open tasks of your [Vikunja](https://vikunja.io) as a calm checklist on [TRM
 - One project, several or all, chosen by name or ID; with several, tasks are grouped under their project
 - Due dates as *Today 18:00*, *Tomorrow*, *Sat* or *2 days late*: late tasks filled black, today outlined
 - Vikunja priority 3 to 5 as `!` to `!!!`, task labels optional
+- Assignees by first name (or username)
+- **Done today**: tasks ticked off today stay on the list with a ticked box and struck through, until midnight
+- **Focus mode**: only what is late or due today or tomorrow
 - Order by due date, priority, title or age
 - An extra [Vikunja filter](https://vikunja.io/docs/filters) on top, e.g. `due_date < now+7d` or `priority >= 3`
 - Clear screens for *all done*, a rejected token or an unreachable server
@@ -44,13 +47,16 @@ Without a token the plugin shows sample tasks.
 | API token | – | Read rights for Tasks and Projects |
 | Projects | all | Names or IDs, comma separated |
 | Extra filter | – | Vikunja filter syntax, combined with "not done" |
+| Show | All open tasks | Or focus: late, today, tomorrow |
+| Done today | on | Today's ticked-off tasks, at the end |
 | Order | Due date | Due date, Priority, Title, Oldest first |
 | Group by project | on | Only when more than one project is shown |
 | Show labels | on | Up to three labels per task |
+| Show assignees | on | Up to three per task |
 | Title | project name or "Tasks" | |
 | Language | Auto | Auto, Deutsch, English |
 
-The plugin asks for up to 250 open tasks (Vikunja caps this at its `max_items_per_page`, 50 by default). If you have more, narrow the list with projects or the extra filter, e.g. `project in 12, 14`.
+The plugin asks for up to 250 open tasks and 250 done today; Vikunja caps each at its `max_items_per_page`, 50 by default. If you have more, narrow the list with projects or the extra filter, e.g. `project in 12, 14`.
 
 ## Development
 

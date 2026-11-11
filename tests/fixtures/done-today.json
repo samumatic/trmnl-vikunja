@@ -1,0 +1,59 @@
+[
+ {
+  "id": 15,
+  "title": "Coffee",
+  "project_id": 3,
+  "done": true,
+  "done_at": "2026-11-11T07:30:00Z",
+  "due_date": "0001-01-01T00:00:00Z",
+  "priority": 4,
+  "labels": [
+   {
+    "id": 9,
+    "title": "Errand"
+   }
+  ],
+  "assignees": null,
+  "description": ""
+ },
+ {
+  "id": 25,
+  "title": "Empty the dishwasher",
+  "project_id": 4,
+  "done": true,
+  "done_at": "2026-11-11T09:15:00Z",
+  "due_date": "0001-01-01T00:00:00Z",
+  "priority": 4,
+  "labels": [
+   {
+    "id": 9,
+    "title": "Errand"
+   }
+  ],
+  "assignees": [
+   {
+    "id": 3,
+    "username": "sam",
+    "name": ""
+   }
+  ],
+  "description": ""
+ },
+ {
+  "id": 26,
+  "title": "Water the plants",
+  "project_id": 4,
+  "done": true,
+  "done_at": "2026-11-10T20:00:00Z",
+  "due_date": "0001-01-01T00:00:00Z",
+  "priority": 4,
+  "labels": [
+   {
+    "id": 9,
+    "title": "Errand"
+   }
+  ],
+  "assignees": null,
+  "description": ""
+ }
+]
