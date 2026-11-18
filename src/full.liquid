@@ -1,8 +1,9 @@
 {% if vk.groups.size > 0 %}
-<div class="layout layout--col layout--top layout--stretch-x">
-  <div class="columns" data-overflow-max-cols="2" data-overflow-max-cols-portrait="1" data-overflow-counter="true">
+<div class="layout layout--row layout--top layout--stretch-y gap--large">
+  <div class="columns grow" data-overflow-max-cols="2" data-overflow-max-cols-portrait="1" data-overflow-counter="true">
     <div class="column">{{ vk_items_wide }}</div>
   </div>
+  {{ vk_stats }}
 </div>
 {% else %}
 {{ vk_message }}
