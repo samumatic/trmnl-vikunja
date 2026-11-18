@@ -1,6 +1,4 @@
-<img src="docs/icon.svg" alt="Vikunja Tasks icon" width="88" align="right">
-
-# Vikunja Tasks
+# <img src="docs/icon.svg" alt="Vikunja Tasks icon" width="40" align="right"> Vikunja Tasks
 
 The open tasks of your [Vikunja](https://vikunja.io) as a calm checklist on [TRMNL](https://trmnl.com) e-paper displays: a box for every task, the most pressing first, due dates in plain words, priority marks for what is urgent and who each task belongs to. What you tick off today stays on the list, ticked, until midnight.
 
