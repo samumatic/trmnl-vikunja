@@ -62,18 +62,6 @@
   {% endfor %}
 {% endcapture %}
 
-{% comment %} TRMNL X only (landscape full): the spare room on the right holds big numbers: late, due today, open, done today. {% endcomment %}
-{% capture vk_stats %}
-  <div class="hidden lg:landscape:flex flex--col flex--left gap--large flex-none">
-    {% for vk_s in vk.stats %}
-      <div class="flex flex--col flex--left gap--none">
-        <span class="value value--xxlarge value--tnums">{{ vk_s.n }}</span>
-        <span class="label lg:label--large">{{ vk_s.label }}</span>
-      </div>
-    {% endfor %}
-  </div>
-{% endcapture %}
-
 {% comment %} No list to show: all done, or a problem with the token or the server. {% endcomment %}
 {% capture vk_message %}
   <div class="layout layout--col layout--center gap--small">

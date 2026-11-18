@@ -86,11 +86,6 @@ RSpec.describe 'Vikunja Tasks' do
                              'Apples' => ['', 0])
     end
 
-    it 'counts what is late, due today, open and done today for TRMNL X' do
-      expect(vk['stats'].map { it.values_at('label', 'n') })
-        .to eq([['Late', 1], ['Due today', 1], ['Open', 9], ['Done today', 2]])
-    end
-
     it 'marks priority 3 to 5 with one to three !' do
       prio = vk['groups'].flat_map { it['tasks'] }.to_h { [it['title'], it['prio']] }
       expect(prio.values_at('Drain cleaner', 'Cover the roses for winter', 'Test smoke alarms', 'Apples'))
