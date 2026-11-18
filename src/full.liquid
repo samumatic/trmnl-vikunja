@@ -1,7 +1,10 @@
 {% if vk.groups.size > 0 %}
+{% comment %} The list sits in its own column: the Framework's overflow subtracts every sibling after .columns from its height, so the stats beside it would leave no room. {% endcomment %}
 <div class="layout layout--row layout--top layout--stretch-y gap--large">
-  <div class="columns grow" data-overflow-max-cols="2" data-overflow-max-cols-portrait="1" data-overflow-counter="true">
-    <div class="column">{{ vk_items_wide }}</div>
+  <div class="flex flex--col grow">
+    <div class="columns" data-overflow-max-cols="2" data-overflow-max-cols-portrait="1" data-overflow-counter="true">
+      <div class="column">{{ vk_items_wide }}</div>
+    </div>
   </div>
   {{ vk_stats }}
 </div>
