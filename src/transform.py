@@ -19,7 +19,7 @@ WORDS = {
         "today": "Heute", "tomorrow": "Morgen", "yesterday": "Gestern", "overdue": "seit {n} Tagen",
         "weekdays": ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
         "months": ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."],
-        "done_group": "Heute erledigt",
+        "done_group": "Heute erledigt", "late": "Überfällig", "due_today": "Heute fällig", "open": "Offen",
         "done_title": "Alles erledigt", "done_text": "Keine offenen Aufgaben.",
         "focus_text": "Nichts fällig bis morgen.",
         "auth_title": "Token abgelehnt", "auth_text": "Vikunja hat das API-Token nicht angenommen. Token und Rechte (Tasks, Projects lesen) prüfen.",
@@ -42,7 +42,7 @@ WORDS = {
         "today": "Today", "tomorrow": "Tomorrow", "yesterday": "Yesterday", "overdue": "{n} days late",
         "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        "done_group": "Done today",
+        "done_group": "Done today", "late": "Late", "due_today": "Due today", "open": "Open",
         "done_title": "All done", "done_text": "No open tasks.",
         "focus_text": "Nothing due by tomorrow.",
         "auth_title": "Token rejected", "auth_text": "Vikunja did not accept the API token. Check the token and its rights (read Tasks and Projects).",
@@ -152,7 +152,7 @@ def rows(payload):
 
 def message(state, title, text, bar):
     return {"state": state, "title": bar, "instance": "", "message": {"title": title, "text": text},
-            "groups": [], "open": 0, "done": 0}
+            "groups": [], "open": 0, "done": 0, "stats": []}
 
 
 def simplify(t, opts):
@@ -220,6 +220,13 @@ def demo_tasks(w, now):
     return open_tasks, done_tasks, names
 
 
+def stats(open_tasks, done_count, today, tz, w):
+    """Big numbers for the spare room on TRMNL X: late, due today, open, done today."""
+    urgency = [due_label(d, today, tz, w, "en")[1] for d in (parse_time(t.get("due_date")) for t in open_tasks) if d]
+    return [{"n": urgency.count(2), "label": w["late"]}, {"n": urgency.count(1), "label": w["due_today"]},
+            {"n": len(open_tasks), "label": w["open"]}, {"n": done_count, "label": w["done_group"]}]
+
+
 def summary(w, open_count, done_count):
     text = w["open_n"].format(n=open_count)
     return text + (" · " + w["done_n"].format(n=done_count) if done_count else "")
@@ -249,6 +256,7 @@ def run(input):
         done_tasks = done_tasks if show_done else []
         return {"vk": {"state": "demo", "title": bar, "instance": w["demo"],
                        "open": len(open_tasks), "done": len(done_tasks), "message": None,
+                       "stats": stats(open_tasks, len(done_tasks), today, tz, w),
                        "groups": build_groups(open_tasks, done_tasks, names, True, today, opts)}}
 
     # One polled URL arrives at the top level, several as IDX_0.. ; TRMNL's own variables are not an answer.
@@ -294,6 +302,7 @@ def run(input):
         "instance": summary(w, len(open_tasks), len(done_tasks)),
         "open": len(open_tasks),
         "done": len(done_tasks),
+        "stats": stats(open_tasks, len(done_tasks), today, tz, w),
         "groups": build_groups(open_tasks, done_tasks, names, len(shown) > 1, today, opts),
         "message": None if count else {"title": w["done_title"], "text": empty_text},
     }}
