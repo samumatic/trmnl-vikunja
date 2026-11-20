@@ -15,6 +15,8 @@
 
 {% comment %} The Framework has no strike-through utility: a task ticked off today is struck through and grayed. {% endcomment %}
 <style>.vk-done { text-decoration: line-through; text-decoration-thickness: 2px; }</style>
+{% comment %} A title shrinks to its row and breaks a word longer than a line: a flex item is never narrower than its longest word (min-width: auto), and the Framework has no min-width class. {% endcomment %}
+<style>.vk-fit { min-width: 0; overflow-wrap: anywhere; }</style>
 
 {% comment %} Due date: filled when late, outlined today, underlined later. Priority (Vikunja 3 to 5) as one to three "!", then assignees and labels. {% endcomment %}
 {% capture vk_items_wide %}
@@ -25,10 +27,10 @@
         <div class="content">
           <div class="flex flex--row flex--top gap--small">
           <div class="flex-none mt--1">{% if vk_t.done %}{{ vk_ticked }}{% else %}{{ vk_box }}{% endif %}</div>
-          <div class="flex flex--col flex--left gap--none grow">
-          <span class="title title--small lg:title--large{% if vk_t.done %} vk-done text--gray-45 1bit:text--black{% endif %}" data-clamp="2">{{ vk_t.title }}</span>
+          <div class="flex flex--col flex--left gap--none grow vk-fit">
+          <span class="title title--small lg:title--large vk-fit{% if vk_t.done %} vk-done text--gray-45 1bit:text--black{% endif %}" data-clamp="2">{{ vk_t.title }}</span>
           {% if vk_t.due != blank or vk_t.prio != blank or vk_t.labels.size > 0 or vk_t.people.size > 0 %}
-            <div class="flex gap--small">
+            <div class="flex flex--wrap gap--small">
               {% if vk_t.prio != blank %}<span class="label label--small lg:label--base label--inverted">{{ vk_t.prio }}</span>{% endif %}
               {% if vk_t.due != blank %}<span class="label label--small lg:label--base {% if vk_t.urgency == 2 %}label--inverted{% elsif vk_t.urgency == 1 %}label--outline{% else %}label--underline{% endif %}">{{ vk_t.due }}</span>{% endif %}
               {% for vk_p in vk_t.people %}<span class="label label--small lg:label--base">{{ vk_person }}&nbsp;{{ vk_p }}</span>{% endfor %}
@@ -52,7 +54,7 @@
         <div class="icon self--start">{% if vk_t.done %}{{ vk_ticked }}{% else %}{{ vk_box }}{% endif %}</div>
         <div class="content">
           <div class="flex flex--row gap--small">
-            <span class="title title--small lg:title--base grow{% if vk_t.done %} vk-done text--gray-45 1bit:text--black{% endif %}" data-clamp="1" data-clamp-lg="2">{{ vk_t.title }}</span>
+            <span class="title title--small lg:title--base grow vk-fit{% if vk_t.done %} vk-done text--gray-45 1bit:text--black{% endif %}" data-clamp="1" data-clamp-lg="2">{{ vk_t.title }}</span>
             {% if vk_t.prio != blank %}<span class="label label--small lg:label--base label--inverted flex-none">{{ vk_t.prio }}</span>{% endif %}
             {% if vk_t.due != blank %}<span class="label label--small lg:label--base flex-none {% if vk_t.urgency == 2 %}label--inverted{% elsif vk_t.urgency == 1 %}label--outline{% else %}label--underline{% endif %}">{{ vk_t.due }}</span>{% endif %}
           </div>
