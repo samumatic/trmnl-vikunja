@@ -52,7 +52,7 @@
         <div class="icon">{% if vk_t.done %}{{ vk_ticked }}{% else %}{{ vk_box }}{% endif %}</div>
         <div class="content">
           <div class="flex flex--row gap--small">
-            <span class="title title--small lg:title--base grow{% if vk_t.done %} vk-done text--gray-45 1bit:text--black{% endif %}" data-clamp="1">{{ vk_t.title }}</span>
+            <span class="title title--small lg:title--base grow{% if vk_t.done %} vk-done text--gray-45 1bit:text--black{% endif %}" data-clamp="1" data-clamp-lg="2">{{ vk_t.title }}</span>
             {% if vk_t.prio != blank %}<span class="label label--small lg:label--base label--inverted flex-none">{{ vk_t.prio }}</span>{% endif %}
             {% if vk_t.due != blank %}<span class="label label--small lg:label--base flex-none {% if vk_t.urgency == 2 %}label--inverted{% elsif vk_t.urgency == 1 %}label--outline{% else %}label--underline{% endif %}">{{ vk_t.due }}</span>{% endif %}
           </div>
